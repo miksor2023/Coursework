@@ -1,17 +1,36 @@
 package coursework;
 
+import java.sql.Array;
+
 public class App {
-    //объявляем массив
+    //объявляем массив employees
     static Employee[] employees = new Employee[10];
+    //метод "добавить сотрудника"
     public static void addEmployee(String name, int department, int salary) {
-        Employee newEmloyee = new Employee(name, department, salary);
-        employees[newEmloyee.getId()] = newEmloyee;
+        if (Employee.getEmploeeQty() == employees.length) {
+            System.out.println("Запись добавить невозможно, хранилище заполнено");
+        } else {
+            Employee newEmloyee = new Employee(name, department, salary);
+            employees[newEmloyee.getId()] = newEmloyee;
+        }
     }
+    //метод "вывести в консоль список сотрудников"
     public static void printEmployeeList() {
-        for (int i = 0; i <= Employee.counter - 1; i++) {
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
             System.out.println(employees[i]);
         }
     }
+    //метод "посчитать сумму затрат в месяц"
+    public static int calculateSalarySum() {
+        int sum = 0;
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
+            sum = sum + employees[i].getSalary();
+        }
+        return sum;
+    }
+    //метод "найти сотрудника с минимальной зарплатой"
+    public static
+
 
 
     public static void main(String[] args) {
@@ -23,8 +42,9 @@ public class App {
         addEmployee("Лидов Марат Исакович", 1, 34900);
         addEmployee("Розин Андрей Гаврилович", 3, 36000);
         addEmployee("Жорин Евгений Михайлович", 3, 78050);
-        addEmployee("Панов Абрам Романович", 1, 33300);
+        addEmployee("Кабанов Абрам Романович", 1, 33300);
         printEmployeeList();
+        System.out.println("Сумма затрат на зарплату за месяц: " + calculateSalarySum());
 
 
 
