@@ -140,7 +140,12 @@ public class App {
     //метод "расчтать среднюю зарплату по отделу"
     public static double calculateAverageDeptSalary(int department) {
         Employee[] deptEmployees = makeDepartmentArray(department);
-        return calculateDeptSalarySum(department)/deptEmployees.length;
+        //условие - если количество людей в отделе совпадает с общим числом сотрудников
+        if (deptEmployees.length == Employee.counter) {
+            throw new IllegalArgumentException("количество людей в отделе совпадает с общим числом сотрудников");
+        } else {
+            return calculateDeptSalarySum(department) / deptEmployees.length;
+        }
     }
     //метод "индексировать зарплаты по отделу на заданный процент
     public static void makeDeptSalaryIndexation (int indexationPercentage, int department) {
@@ -151,23 +156,37 @@ public class App {
         }
 
     }
-
-
-
-
-
-
-
+    //метод для вывода списка сотрудников с ЗП меньше заданного значения
+    public static void printEmployeesWithSalaryLessThan (double edgeSalary) {
+        System.out.println("\nСписок сотрудников с зарплатой меньше " + edgeSalary + "р.");
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
+            if (employees[i].getSalary() < edgeSalary) {
+                System.out.printf(Locale.US, "id: " + employees[i].getId() + "; Ф.И.О.: " +
+                        employees[i].getName() + "; зарплата: %.2fр.\n", employees[i].getSalary());
+            }
+        }
+    }
+    //метод для вывода списка сотрудников с ЗП больше заданного значения
+    public static void printEmployeesWithSalaryMoreThan (double edgeSalary) {
+        System.out.println("\nСписок сотрудников с зарплатой больше или равно " + edgeSalary + "р.");
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
+            if (employees[i].getSalary() >= edgeSalary) {
+                System.out.printf(Locale.US, "id: " + employees[i].getId() + "; Ф.И.О.: " +
+                        employees[i].getName() + "; зарплата: %.2fр.\n", employees[i].getSalary());
+            }
+        }
+    }
+    //метод main - тесты
     public static void main(String[] args) {
 
-        addEmployee("Иванов Иван Иванович", 3, 35000);
-        addEmployee("Сидоров Пётр Петрович", 2, 36000);
+        addEmployee("Иванов Иван Иванович", 2, 35000);
+        addEmployee("Сидоров Пётр Петрович", 1, 36000);
         addEmployee("Петров Дмитрий Сергеевич", 2, 40500);
-        addEmployee("Сергеев Олег Дмитриевич", 1, 28700);
+        addEmployee("Сергеев Олег Дмитриевич", 2, 28700);
         addEmployee("Лидов Марат Исакович", 1, 34900);
         addEmployee("Розин Андрей Гаврилович", 3, 36000);
-        addEmployee("Жорин Евгений Михайлович", 3, 78050);
-        addEmployee("Кабанов Абрам Романович", 1, 33300);
+        addEmployee("Жорин Евгений Михайлович", 1, 78050);
+        addEmployee("Кабанов Абрам Романович", 3, 33300);
         printEmployeeList();
         System.out.println("\nСумма затрат на зарплату за месяц: " + calculateSalarySum() + "p.");
         System.out.println("Сотрудник с минимальной зарплатой: " + getMinSalaryEmploee());
@@ -183,6 +202,9 @@ public class App {
         System.out.printf(Locale.US,"Средняя зарплата в отделе: %.2fр.\n", calculateAverageDeptSalary(1));
         makeDeptSalaryIndexation(10, 1);
         printDepartmentEmployeeList(1);
+        printEmployeesWithSalaryLessThan(40000);
+        printEmployeesWithSalaryMoreThan(40000);
+
 
 
 
