@@ -73,32 +73,87 @@ public class App {
             employees[i].setSalary(employees[i].getSalary() * increaseRate );
         }
     }
-    //метод "найти сотрудника с минимальной зарплатой по заданному отделу"
-    public static String getLowestSalaryEmploeeInDepartment(int department) {
+    //делаем служебный метод, собирающий массив сотрудников по заданному отделу
+    public static Employee[] makeDepartmentArray(int department) {
         //собираем массив сотрудника отдела
         int deptEmploeeQty = 0;
-        static Employee[] deptEmployees = new Employee[Employee.getEmploeeQty()];
+        Employee[] deptEmployees = new Employee[Employee.getEmploeeQty()];
         for (int i = 0; i < Employee.getEmploeeQty(); i++) {
             if (employees[i].getDepartment() == department) {
-                    deptEmployees[deptEmploeeQty] = employees[i];
-                    deptEmploeeQty++;
+                deptEmployees[deptEmploeeQty] = employees[i];
+                deptEmploeeQty++;
             }
         }
         if (deptEmploeeQty == 0) {
             System.out.println("В базе нет сотрудников из отдела " + department);
-            return;
         }
-        //ищем сотрудника
-        double minSalary = deptEmployees[0].getSalary();
+        //создаём массив без пустых полей и возвращаем его
+        Employee[] deptEmployeesModified = new Employee[deptEmploeeQty];
+        for (int i = 0; i < deptEmploeeQty; i++) {
+            deptEmployeesModified[i] = deptEmployees[i];
+        }
+        return deptEmployeesModified;
+    }
+    //метод "вывести в консоль список сотрудников по заданному отделу"
+    public static void printDepartmentEmployeeList(int department) {
+        Employee[] deptEmploees = makeDepartmentArray(department);
+        System.out.println("\nСписок сотрудников " + department + " отдела");
+        for (int i = 0; i < deptEmploees.length; i++) {
+            System.out.printf (Locale.US,"Ф.И.О.: " + deptEmploees[i].getName() +
+                    "; зарплата: %.2fр.; id: " + deptEmploees[i].getId() + "\n", deptEmploees[i].getSalary());
+        }
+    }
+    //метод "ищем сотрудника с минимальной зарплатой по отделу"
+    public static String getMinSalaryEmploeeInDept(int department) {
+        Employee[] deptEmploees = makeDepartmentArray(department);
+        double minSalary = deptEmploees[0].getSalary();
         int index = 0;
-        for (int i = 1; i < Employee.getEmploeeQty(); i++) {
-            if (employees[i].getSalary() < minSalary) {
-                minSalary = employees[i].getSalary();
+        for (int i = 1; i < deptEmploees.length; i++) {
+            if (deptEmploees[i].getSalary() < minSalary) {
+                minSalary = deptEmploees[i].getSalary();
                 index = i;
             }
         }
-        return employees[index].getName();
+        return deptEmploees[index].getName();
     }
+    public static String getMaxSalaryEmployeeInDept(int department) {
+        Employee[] deptEmployees = makeDepartmentArray(department);
+        double maxSalary = deptEmployees[0].getSalary();
+        int index = 0;
+        for (int i = 1; i < deptEmployees.length; i++) {
+            if (deptEmployees[i].getSalary() > maxSalary) {
+                maxSalary = deptEmployees[i].getSalary();
+                index = i;
+            }
+        }
+        return deptEmployees[index].getName();
+    }
+    //метод "расчитать сумму затрат по отделу"
+    public static double calculateDeptSalarySum(int department) {
+        Employee[] deptEmployees = makeDepartmentArray(department);
+        double sum = 0;
+        for (int i = 0; i < deptEmployees.length; i++) {
+            sum = sum + deptEmployees[i].getSalary();
+        }
+        return sum;
+    }
+    //метод "расчтать среднюю зарплату по отделу"
+    public static double calculateAverageDeptSalary(int department) {
+        Employee[] deptEmployees = makeDepartmentArray(department);
+        return calculateDeptSalarySum(department)/deptEmployees.length;
+    }
+    //метод "индексировать зарплаты по отделу на заданный процент
+    public static void makeDeptSalaryIndexation (int indexationPercentage, int department) {
+        Employee[] deptEmployees = makeDepartmentArray(department);
+        double increaseRate = 1 + indexationPercentage / 100D;
+        for (int i = 0; i < deptEmployees.length; i++) {
+            deptEmployees[i].setSalary(deptEmployees[i].getSalary() * increaseRate );
+        }
+
+    }
+
+
+
 
 
 
@@ -121,6 +176,15 @@ public class App {
         printNameList();
         makeSalaryIndexation(10);
         printEmployeeList();
+        printDepartmentEmployeeList(1);
+        System.out.println("\nСотрудник с минимальной зарплатой в отделе: " + getMinSalaryEmploeeInDept(1));
+        System.out.println("Сотрудник с максимальной зарплатой в отделе: " + getMaxSalaryEmployeeInDept(1));
+        System.out.println("Сумма затрат в месяц в отделе: " + calculateDeptSalarySum(1) + "p.");
+        System.out.printf(Locale.US,"Средняя зарплата в отделе: %.2fр.\n", calculateAverageDeptSalary(1));
+        makeDeptSalaryIndexation(10, 1);
+        printDepartmentEmployeeList(1);
+
+
 
 
 
