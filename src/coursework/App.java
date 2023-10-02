@@ -1,6 +1,7 @@
 package coursework;
 
 import java.sql.Array;
+import java.util.Locale;
 
 public class App {
     //объявляем массив employees
@@ -16,6 +17,7 @@ public class App {
     }
     //метод "вывести в консоль список сотрудников"
     public static void printEmployeeList() {
+        System.out.println("\nСписок данных всех сотрудников:");
         for (int i = 0; i < Employee.getEmploeeQty(); i++) {
             System.out.println(employees[i]);
         }
@@ -57,6 +59,14 @@ public class App {
         return calculateSalarySum()/Employee.getEmploeeQty();
     }
 
+    //метод "вывести в консоль ФИО всех сотрудников"
+    public static void printNameList() {
+        System.out.println("\nСписок имён всех сотрудников:");
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
+            System.out.println(employees[i].getName());
+        }
+    }
+
 
 
     public static void main(String[] args) {
@@ -70,10 +80,11 @@ public class App {
         addEmployee("Жорин Евгений Михайлович", 3, 78050);
         addEmployee("Кабанов Абрам Романович", 1, 33300);
         printEmployeeList();
-        System.out.println("Сумма затрат на зарплату за месяц: " + calculateSalarySum());
+        System.out.println("\nСумма затрат на зарплату за месяц: " + calculateSalarySum() + " p.");
         System.out.println("Сотрудник с минимальной зарплатой: " + getLowestSalaryEmploee());
         System.out.println("Сотрудник с максимальной зарплатой: " + getHighestSalaryEmploee());
-        System.out.printf("Среднее значение зарплат: " + calculateAverageSalary());
+        System.out.printf(Locale.US, "Среднее значение зарплат: %.2f р.\n", calculateAverageSalary());
+        printNameList();
 
 
 
