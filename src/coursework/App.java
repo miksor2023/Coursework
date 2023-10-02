@@ -29,7 +29,33 @@ public class App {
         return sum;
     }
     //метод "найти сотрудника с минимальной зарплатой"
-    public static
+    public static String getLowestSalaryEmploee() {
+        int minSalary = employees[0].getSalary();
+        int index = 0;
+        for (int i = 1; i < Employee.getEmploeeQty(); i++) {
+            if (employees[i].getSalary() < minSalary) {
+                minSalary = employees[i].getSalary();
+                index = i;
+            }
+        }
+        return employees[index].getName();
+    }
+    //метод "найти сотрудника с максимальной зарплатой"
+    public static String getHighestSalaryEmploee() {
+        int maxSalary = employees[0].getSalary();
+        int index = 0;
+        for (int i = 1; i < Employee.getEmploeeQty(); i++) {
+            if (employees[i].getSalary() > maxSalary) {
+                maxSalary = employees[i].getSalary();
+                index = i;
+            }
+        }
+        return employees[index].getName();
+    }
+    //метод "расчитать среднее значение зарплаты"
+    public static double calculateAverageSalary() {
+        return calculateSalarySum()/Employee.getEmploeeQty();
+    }
 
 
 
@@ -45,6 +71,9 @@ public class App {
         addEmployee("Кабанов Абрам Романович", 1, 33300);
         printEmployeeList();
         System.out.println("Сумма затрат на зарплату за месяц: " + calculateSalarySum());
+        System.out.println("Сотрудник с минимальной зарплатой: " + getLowestSalaryEmploee());
+        System.out.println("Сотрудник с максимальной зарплатой: " + getHighestSalaryEmploee());
+        System.out.printf("Среднее значение зарплат: " + calculateAverageSalary());
 
 
 
