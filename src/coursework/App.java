@@ -7,7 +7,7 @@ public class App {
     //объявляем массив employees
     static Employee[] employees = new Employee[10];
     //метод "добавить сотрудника"
-    public static void addEmployee(String name, int department, int salary) {
+    public static void addEmployee(String name, int department, double salary) {
         if (Employee.getEmploeeQty() == employees.length) {
             System.out.println("Запись добавить невозможно, хранилище заполнено");
         } else {
@@ -23,16 +23,16 @@ public class App {
         }
     }
     //метод "посчитать сумму затрат в месяц"
-    public static int calculateSalarySum() {
-        int sum = 0;
+    public static double calculateSalarySum() {
+        double sum = 0;
         for (int i = 0; i < Employee.getEmploeeQty(); i++) {
             sum = sum + employees[i].getSalary();
         }
         return sum;
     }
     //метод "найти сотрудника с минимальной зарплатой"
-    public static String getLowestSalaryEmploee() {
-        int minSalary = employees[0].getSalary();
+    public static String getMinSalaryEmploee() {
+        double minSalary = employees[0].getSalary();
         int index = 0;
         for (int i = 1; i < Employee.getEmploeeQty(); i++) {
             if (employees[i].getSalary() < minSalary) {
@@ -43,8 +43,8 @@ public class App {
         return employees[index].getName();
     }
     //метод "найти сотрудника с максимальной зарплатой"
-    public static String getHighestSalaryEmploee() {
-        int maxSalary = employees[0].getSalary();
+    public static String getMaxSalaryEmploee() {
+        double maxSalary = employees[0].getSalary();
         int index = 0;
         for (int i = 1; i < Employee.getEmploeeQty(); i++) {
             if (employees[i].getSalary() > maxSalary) {
@@ -66,6 +66,40 @@ public class App {
             System.out.println(employees[i].getName());
         }
     }
+    //метод "индексация зарплат на заданный процент
+    public static void makeSalaryIndexation (int indexationPercentage) {
+        double increaseRate = 1 + indexationPercentage / 100D;
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
+            employees[i].setSalary(employees[i].getSalary() * increaseRate );
+        }
+    }
+    //метод "найти сотрудника с минимальной зарплатой по заданному отделу"
+    public static String getLowestSalaryEmploeeInDepartment(int department) {
+        //собираем массив сотрудника отдела
+        int deptEmploeeQty = 0;
+        static Employee[] deptEmployees = new Employee[Employee.getEmploeeQty()];
+        for (int i = 0; i < Employee.getEmploeeQty(); i++) {
+            if (employees[i].getDepartment() == department) {
+                    deptEmployees[deptEmploeeQty] = employees[i];
+                    deptEmploeeQty++;
+            }
+        }
+        if (deptEmploeeQty == 0) {
+            System.out.println("В базе нет сотрудников из отдела " + department);
+            return;
+        }
+        //ищем сотрудника
+        double minSalary = deptEmployees[0].getSalary();
+        int index = 0;
+        for (int i = 1; i < Employee.getEmploeeQty(); i++) {
+            if (employees[i].getSalary() < minSalary) {
+                minSalary = employees[i].getSalary();
+                index = i;
+            }
+        }
+        return employees[index].getName();
+    }
+
 
 
 
@@ -80,11 +114,13 @@ public class App {
         addEmployee("Жорин Евгений Михайлович", 3, 78050);
         addEmployee("Кабанов Абрам Романович", 1, 33300);
         printEmployeeList();
-        System.out.println("\nСумма затрат на зарплату за месяц: " + calculateSalarySum() + " p.");
-        System.out.println("Сотрудник с минимальной зарплатой: " + getLowestSalaryEmploee());
-        System.out.println("Сотрудник с максимальной зарплатой: " + getHighestSalaryEmploee());
-        System.out.printf(Locale.US, "Среднее значение зарплат: %.2f р.\n", calculateAverageSalary());
+        System.out.println("\nСумма затрат на зарплату за месяц: " + calculateSalarySum() + "p.");
+        System.out.println("Сотрудник с минимальной зарплатой: " + getMinSalaryEmploee());
+        System.out.println("Сотрудник с максимальной зарплатой: " + getMaxSalaryEmploee());
+        System.out.printf(Locale.US, "Среднее значение зарплат: %.2fр.\n", calculateAverageSalary());
         printNameList();
+        makeSalaryIndexation(10);
+        printEmployeeList();
 
 
 

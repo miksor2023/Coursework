@@ -1,13 +1,15 @@
 package coursework;
 
+import java.util.Locale;
+
 public class Employee {
     private String name;
     private int department;
-    private int salary;
+    private double salary;
     private int id;
     static int counter;
 
-    public Employee(String name, int department, int salary) {
+    public Employee(String name, int department, double salary) {
         this.name = name;
         this.department = department;
         this.salary = salary;
@@ -23,7 +25,7 @@ public class Employee {
         return department;
     }
 
-    public int getSalary() {
+    public double getSalary() {
         return salary;
     }
 
@@ -33,21 +35,20 @@ public class Employee {
 
     public static int getEmploeeQty() {
         return counter;
-    }
+    }//возвращает количество вызовов конструктора
 
     public void setDepartment(int department) {
         this.department = department;
     }
-    public void setSalary(int salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 
     @Override
     public String toString() {
-        return "Ф.И.О.: " + name +
+        return String.format (Locale.US,"Ф.И.О.: " + name +
                 "; отдел: " + department +
-                "; зарплата: " + salary +
-                "; id: " + id;
+                "; зарплата: %.2fр.; id: " + id, salary);
     }
 }
 
